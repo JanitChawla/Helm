@@ -1,0 +1,9 @@
+dependencies:
+- name: notejam-front
+  repository: file://charts/notejam-front
+  version: 0.1.0
+- name: notejam-postgres
+  repository: file://charts/notejam-postgres
+  version: 0.1.0
+digest: sha256:cdafe831fa024aae65179328e86285622d76113d6d5d876a8e6fd1cd4666e9ef
+generated: "2023-09-15T18:45:03.457385+05:30"

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "notejam-front.fullname" . }}
+  labels:
+    {{- include "notejam-front.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.global.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "notejam-front.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "notejam-front.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.global.image.repository }}"
+          imagePullPolicy: {{ .Values.global.image.pullPolicy }}
+          ports:
+          - containerPort: {{ .Values.global.service.port }}
+          env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{.Values.global.secret.name}}
+                key: password
+          - name: POSTGRES_HOST
+            value: {{.Values.global.service.pgservice}}
+
+

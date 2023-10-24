@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{.Values.global.service.pgservice}}
+  labels:
+    {{- include "notejam-postgres.labels" . | nindent 4 }}
+spec:
+  ports:
+  - protocol:  {{.Values.global.service.protocol}}
+    port: {{.Values.global.service.postport}}
+    targetPort: {{.Values.global.service.postport}}
+  selector:
+    {{- include "notejam-postgres.selectorLabels" . | nindent 4 }}

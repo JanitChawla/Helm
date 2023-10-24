@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{.Values.global.volumes.pgpv}}
+  labels:
+    name: {{.Values.global.volumes.pgPvLabel}}
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: {{.Values.global.volumes.mode}}
+  storageClassName: {{.Values.global.volumes.className}}
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data/helm"

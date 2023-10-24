@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "notejam-postgres.fullname" . }}
+  labels:
+    {{- include "notejam-postgres.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.global.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "notejam-postgres.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "notejam-postgres.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.global.image.repo}}"
+        ports:
+        - containerPort: {{ .Values.global.service.postport}}
+        env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{.Values.global.secret.name}}
+                key: password
+          - name: POSTGRES_DB
+            value: notejam
+        volumeMounts:
+        - name: {{.Values.global.volumes.pgmount}}
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: {{.Values.global.volumes.pgmount}}
+        persistentVolumeClaim:
+          claimName: {{.Values.global.volumes.pgpvc}}

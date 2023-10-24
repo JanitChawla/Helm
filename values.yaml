@@ -1,0 +1,43 @@
+
+global:
+  replicaCount: 1
+
+  image:
+    repository: janit31/my-notejam
+    repo: postgres
+    pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+    tag: ""
+
+
+  podSecurityContext: {}
+  # fsGroup: 2000
+  securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+  service:
+    type: ClusterIP
+    port: 8000
+    serviceport: 80
+    serviceport2: 443
+    postport: 5432
+    protocol: TCP
+    pgservice: postgres-service-helm
+  
+  secret:
+    type: Opaque
+    name: postgres-secret-helm
+    password: cG9zdGdyZXMK
+  
+  volumes:
+    pgmount: postgres-volume-mount
+    pgpv: postgres-pv-helm
+    pgpvc: postgres-pvc-helm
+    className: slow
+    pgPvLabel: my-pv
+    mode: Filesystem
